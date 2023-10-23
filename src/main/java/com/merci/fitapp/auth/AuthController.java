@@ -1,5 +1,6 @@
 package com.merci.fitapp.auth;
 
+import com.merci.fitapp.dtos.LoginDto;
 import com.merci.fitapp.dtos.RegisterDto;
 import com.merci.fitapp.exception.ServiceException;
 import com.merci.fitapp.response.ApiResponse;
@@ -29,6 +30,15 @@ public class AuthController {
             return ResponseEntity.ok(authService.register(dto));
         }catch(ServiceException e) {
             System.out.println(e);
+            return ResponseHandler.error(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<String>> loginUser(@Valid @RequestBody LoginDto loginDto) {
+        try {
+            return ResponseEntity.ok(authService.loginUser(loginDto));
+        } catch(ServiceException e) {
             return ResponseHandler.error(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

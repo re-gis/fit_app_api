@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleGenericException(Exception e) {
-        return new ResponseEntity<>(new ApiResponse<>("An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
+        System.out.println(e);
+        return new ResponseEntity<>(new ApiResponse<>(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

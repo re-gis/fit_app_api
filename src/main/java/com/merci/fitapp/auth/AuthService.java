@@ -1,5 +1,6 @@
 package com.merci.fitapp.auth;
 
+import com.merci.fitapp.dtos.LoginDto;
 import com.merci.fitapp.dtos.RegisterDto;
 import com.merci.fitapp.entities.User;
 import com.merci.fitapp.exception.ServiceException;
@@ -9,6 +10,7 @@ import com.merci.fitapp.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public ApiResponse register(RegisterDto dto) {
-//        if (dto.getAge() == null || dto.getEmail() == null || dto.getPassword() == null || dto.getUsername() == null) {}
+        if (dto.getAge() == 0 || dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
+            throw new ServiceException("All credentials are required!");
+        }
         if(userRepository.findByEmail(dto.getEmail()).isPresent()){
             throw  new ServiceException("User already registered");
         }
 
         var user = User.builder()
-                .username(dto.getUsername())
+                .name(dto.getName())
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .age(dto.getAge())
@@ -37,12 +41,35 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
-        var token = jwtService.generateToken((UserDetails) user);
+        var token = jwtService.generateToken(user);
 
         return ApiResponse.builder()
                 .data(token)
                 .success(true)
                 .build();
 
+    }
+
+    public ApiResponse loginUser(LoginDto dto) {
+        if (dto.getEmail() == null || dto.getPassword() == null) {
+            throw new ServiceException("All credentials are required!");
+        }
+
+        var auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
+        );
+
+        if(!auth.isAuthenticated()) {
+            throw  new ServiceException("Authentication failed");
+        }
+
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new ServiceException("User not found!"));
+
+        System.out.println(user);
+        var token = jwtService.generateToken(user);
+        return ApiResponse.builder()
+                .success(true)
+                .data(token)
+                .build();
     }
 }
