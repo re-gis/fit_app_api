@@ -28,11 +28,11 @@ public class FitnessGoal {
     private String description;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "start_data", nullable = false)
+    @Column(name = "start_date", nullable = false)
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "end_data", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private Date endDate;
 
     @Enumerated(EnumType.STRING)

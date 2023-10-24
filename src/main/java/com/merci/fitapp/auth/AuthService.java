@@ -3,6 +3,7 @@ package com.merci.fitapp.auth;
 import com.merci.fitapp.dtos.LoginDto;
 import com.merci.fitapp.dtos.RegisterDto;
 import com.merci.fitapp.entities.User;
+import com.merci.fitapp.enums.URole;
 import com.merci.fitapp.exception.ServiceException;
 import com.merci.fitapp.repositories.UserRepository;
 import com.merci.fitapp.response.ApiResponse;
@@ -27,6 +28,13 @@ public class AuthService {
         if (dto.getAge() == 0 || dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null) {
             throw new ServiceException("All credentials are required!");
         }
+
+
+        System.out.println(dto.getRole());
+
+        if(dto.getRole() != "" && dto.getRole() != "USER" || dto.getRole() != "ADMIN" || dto.getRole() != "TRAINER"){
+            throw  new ServiceException("Role not allowed!");
+        }
         if(userRepository.findByEmail(dto.getEmail()).isPresent()){
             throw  new ServiceException("User already registered");
         }
@@ -38,7 +46,12 @@ public class AuthService {
                 .age(dto.getAge())
                 .height(dto.getHeight())
                 .weight(dto.getWeight())
+                .role("USER")
                 .build();
+
+        if(dto.getRole() != null){
+            user.setRole(dto.getRole().toUpperCase());
+        }
 
         userRepository.save(user);
         var token = jwtService.generateToken(user);

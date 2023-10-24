@@ -1,5 +1,6 @@
 package com.merci.fitapp.dtos;
 
+import com.merci.fitapp.enums.URole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -28,4 +29,6 @@ public class RegisterDto {
     private Double weight;
 
     private MultipartFile imageUrl;
+
+    private String role;
 }

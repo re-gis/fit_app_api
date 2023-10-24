@@ -1,5 +1,6 @@
 package com.merci.fitapp.entities;
 
+import com.merci.fitapp.enums.URole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,8 @@ public class User implements UserDetails {
     private Double weight;
 
     private String imageUrl;
+
+    private String role = "USER";
 
     @OneToMany(mappedBy = "user")
     private List<FitnessGoal> goals;
