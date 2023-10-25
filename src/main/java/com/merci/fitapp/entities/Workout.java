@@ -29,8 +29,12 @@ public class Workout {
     @Column(nullable = false)
     private int duration;
 
-    @Enumerated(EnumType.STRING)
-    private WType type;
+    @Column(nullable = false)
+    private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_exercise",

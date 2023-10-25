@@ -51,7 +51,11 @@ public class ExerciseService {
     }
 
     public List<Exercise> getExercises() {
+        User user = userService.getLoggedUser();
         List<Exercise> exerciseList = exerciseRepository.findAll();
+        if(exerciseList.size() == 0) {
+            throw new ServiceException("No exercises found for " + user.getName());
+        }
         return exerciseList;
     }
 
