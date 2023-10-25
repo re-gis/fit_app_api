@@ -35,7 +35,6 @@ public class FitnessGoal {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private GoalStatus goalStatus;
+    private String goalStatus;
 }

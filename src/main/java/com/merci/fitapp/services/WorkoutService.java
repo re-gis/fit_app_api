@@ -7,17 +7,11 @@ import com.merci.fitapp.entities.Workout;
 import com.merci.fitapp.exception.ServiceException;
 import com.merci.fitapp.repositories.ExerciseRepository;
 import com.merci.fitapp.repositories.WorkoutRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +71,10 @@ public class WorkoutService {
             throw new ServiceException("No workout found!");
         }
 
-        if(user.getRole() == "user" && !user.equals(workout.getUser())){
+        boolean isUserRole = "user".equalsIgnoreCase(user.getRole());
+        boolean isNotWorkoutOwner = !user.equals(workout.getUser());
+
+        if (isUserRole && isNotWorkoutOwner) {
             throw new ServiceException("Not authorized to perform this action!");
         }
 
