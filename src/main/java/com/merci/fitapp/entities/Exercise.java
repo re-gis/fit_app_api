@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "exercises")
 public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -28,8 +28,7 @@ public class WorkoutService {
         }
 
         // upload the video and photo
-        String photo = (String) uploadPhotoService.uploadProfilePic(photoUrl);
-        String video = (String) uploadVideoService.uploadVideo(videoUrl);
+
 
         // create
 

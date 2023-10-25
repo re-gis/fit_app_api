@@ -30,11 +30,16 @@ public class AuthService {
         }
 
 
-        System.out.println(dto.getRole());
-
-        if(dto.getRole() != "" && dto.getRole() != "USER" || dto.getRole() != "ADMIN" || dto.getRole() != "TRAINER"){
-            throw  new ServiceException("Role not allowed!");
+        if (dto.getRole() == null || dto.getRole().trim().isEmpty()) {
+            dto.setRole("USER");
         }
+
+        String role = dto.getRole().toLowerCase();
+
+        if (!role.equals("admin") && !role.equals("user") && !role.equals("trainer")) {
+            throw new ServiceException("User role not allowed!");
+        }
+
         if(userRepository.findByEmail(dto.getEmail()).isPresent()){
             throw  new ServiceException("User already registered");
         }
