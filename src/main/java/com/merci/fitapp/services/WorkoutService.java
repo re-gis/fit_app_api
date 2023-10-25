@@ -22,16 +22,15 @@ public class WorkoutService {
     private final UploadVideoService uploadVideoService;
 
 
-    public void createWorkout(CreateWorkoutDto dto, MultipartFile photoUrl, MultipartFile videoUrl) throws IOException {
-        if(dto.getDuration() == 0 || dto.getType() == "" || dto.getTitle() == "" || dto.getDescription() == "") {
+    public Workout createWorkout(CreateWorkoutDto dto) throws IOException {
+        if(dto.getDuration() == 0 || dto.getType() == "" || dto.getTitle() == "" || dto.getDescription() == "" || dto.getExercises() == null) {
             throw  new ServiceException("All workout details are required!");
         }
 
-        // upload the video and photo
+        System.out.println(dto.getExercises());
 
-
-        // create
-
+        Workout wrk = null;
+        return  wrk;
 
     }
 

@@ -64,11 +64,16 @@ public class ExerciseService {
         return exercise;
     }
 
-    public String deleteExercise(Integer id) throws ServiceException{
+    public String deleteExercise(int id) throws ServiceException{
         User user = userService.getLoggedUser();
 
         if(user.getRole().equalsIgnoreCase("user")) {
-            throw new ServiceException("Exercise does not exist!");
+            throw new ServiceException("Not authorised to perform this actions!");
+        }
+
+        // check if it exists
+        if(!exerciseRepository.findById(id).isPresent()) {
+            throw new ServiceException("Exercise not found!");
         }
 
         // delete the exercise

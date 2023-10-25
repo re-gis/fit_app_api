@@ -52,4 +52,14 @@ public class ExerciseController {
             return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteSingleExercise(@PathVariable("id") Integer id) {
+        try{
+            String deEx = exerciseService.deleteExercise(id);
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(deEx).build());
+        }catch (ServiceException e){
+            return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
