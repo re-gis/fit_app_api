@@ -86,6 +86,33 @@ public class GoalService {
         User user = userService.getLoggedUser();
 
         // get goal
-        Object goal = goalRepository.findByIdAndUser(id, user).orElseThrow(() -> new ServiceException("Goal not found or you're not'"));
+        FitnessGoal goal = goalRepository.findByIdAndUser(id, user).orElseThrow(() -> new ServiceException("Goal not found or you're not authorised to perform this actions!"));
+        // delete ethe goal
+        goalRepository.delete(goal);
+        return "Goal deleted successfully!";
+    }
+
+    public String completeGoal(Integer goalId) {
+        // get user and goal
+        User user = userService.getLoggedUser();
+        FitnessGoal goal = goalRepository.findByIdAndUser(goalId, user).orElseThrow(() -> new ServiceException("Goal not found or you're not authorised to perform this actions!"));
+        if(goal == null) {
+            throw new ServiceException("Goal not found or you're not authorised to perform this actions!");
+        }
+
+        goal.setGoalStatus("ACHIEVED");
+        goalRepository.save(goal);
+        return "Goal successfully completed!";
+    }
+
+    public String uncompleteGoal(Integer goalId) {
+        User user = userService.getLoggedUser();
+        FitnessGoal goal = goalRepository.findByIdAndUser(goalId, user).orElseThrow(() -> new ServiceException("Goal not found or you're not authorized to perform this action!"));
+        if(goal == null) {
+            throw new ServiceException("Goal not found or you're not authorised to perform this actions!");
+        }
+        goal.setGoalStatus("FAILED");
+        goalRepository.save(goal);
+        return "Goal failed!";
     }
 }

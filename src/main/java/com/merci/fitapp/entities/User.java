@@ -1,5 +1,6 @@
 package com.merci.fitapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merci.fitapp.enums.URole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,8 +42,6 @@ public class User implements UserDetails {
 
     private String role = "USER";
 
-    @OneToMany(mappedBy = "user")
-    private List<FitnessGoal> goals;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

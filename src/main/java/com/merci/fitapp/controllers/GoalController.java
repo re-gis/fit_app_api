@@ -1,6 +1,7 @@
 package com.merci.fitapp.controllers;
 
 import com.merci.fitapp.dtos.CreateGoalDto;
+import com.merci.fitapp.dtos.UpdateGoalDto;
 import com.merci.fitapp.entities.FitnessGoal;
 import com.merci.fitapp.exception.ServiceException;
 import com.merci.fitapp.response.ApiResponse;
@@ -45,6 +46,36 @@ public class GoalController {
             Object o = goalService.getOneOfYourGoals(id);
             return ResponseEntity.ok(ApiResponse.builder().success(true).data(o).build());
         }catch(ServiceException e){
+            return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteGoal(@PathVariable("id") Integer id) {
+        try{
+            String dGoal = goalService.deleteGoal(id);
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(dGoal).build());
+        }catch(ServiceException e){
+            return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/complete")
+    public ResponseEntity<ApiResponse<Object>> complete(@RequestBody UpdateGoalDto dto) {
+        try{
+            String cGoal = goalService.completeGoal(dto.getGoalId());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(cGoal).build());
+        }catch(ServiceException e) {
+            return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/failed")
+    public ResponseEntity<ApiResponse<Object>> failed(@RequestBody UpdateGoalDto dto) {
+        try{
+            String dGoal = goalService.uncompleteGoal(dto.getGoalId());
+            return ResponseEntity.ok(ApiResponse.builder().success(true).data(dGoal).build());
+        }catch(ServiceException e) {
             return ResponseHandler.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

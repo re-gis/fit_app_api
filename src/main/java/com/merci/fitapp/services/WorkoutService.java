@@ -66,10 +66,7 @@ public class WorkoutService {
     public String deleteWorkOut(Integer id) {
         User user = userService.getLoggedUser();
         // get the workout
-        Workout workout = workoutRepository.findById(id).orElseThrow();
-        if(workout == null) {
-            throw new ServiceException("No workout found!");
-        }
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new ServiceException("No workout found!"));
 
         boolean isUserRole = "user".equalsIgnoreCase(user.getRole());
         boolean isNotWorkoutOwner = !user.equals(workout.getUser());

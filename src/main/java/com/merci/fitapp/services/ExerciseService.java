@@ -60,10 +60,7 @@ public class ExerciseService {
     }
 
     public Exercise getSingleExercise(Integer id) throws ServiceException{
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow();
-        if(exercise == null) {
-            throw new ServiceException("Could not find exercise");
-        }
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new ServiceException("Could not find the exercise!"));
 
         return exercise;
     }

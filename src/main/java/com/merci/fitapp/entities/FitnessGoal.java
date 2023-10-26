@@ -1,5 +1,6 @@
 package com.merci.fitapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.merci.fitapp.enums.GoalStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class FitnessGoal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @Column(nullable = false, length = 500)

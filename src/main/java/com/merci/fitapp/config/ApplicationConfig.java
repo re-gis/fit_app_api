@@ -1,5 +1,6 @@
 package com.merci.fitapp.config;
 
+import com.merci.fitapp.exception.ServiceException;
 import com.merci.fitapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

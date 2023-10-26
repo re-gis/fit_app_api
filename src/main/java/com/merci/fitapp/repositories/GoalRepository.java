@@ -13,5 +13,5 @@ public interface GoalRepository extends JpaRepository<FitnessGoal, Integer> {
 
     List<FitnessGoal> findByUser(User user);
 
-    Optional<Object> findByIdAndUser(Integer goal, User user);
+    Optional<FitnessGoal> findByIdAndUser(Integer goal, User user);
 }
